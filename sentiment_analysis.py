@@ -8,6 +8,8 @@ import feedparser
 import html2text
 import re
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+#       Loading Data
 raw_rss = [
         'http://bitcoin.worldnewsoffice.com/rss/category/1',
         'https://www.coindesk.com/feed/',
@@ -24,6 +26,8 @@ for url in raw_rss:
     for post in feed.entries:
         posts.append(post.summary)
 
+#       Cleaning Data
+
 h = html2text.HTML2Text()
 clean_text = lambda x: h.handle(x)
 clean_br = lambda x: re.sub(r'\<br \/\>','',x)
@@ -32,6 +36,8 @@ posts = [clean_text(item) for item in  posts]
 posts = [item.lstrip() for item in posts]
 posts = [clean_br(item) for item in posts]
 posts = [clean_url(item) for item in posts]
+
+#       Sentiment Analysis
 
 sid = SentimentIntensityAnalyzer()
 positive = negative = 0
